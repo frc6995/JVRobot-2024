@@ -199,15 +199,15 @@ public class SparkBaseConfig extends Config<CANSparkBase, SparkBaseConfig> {
         //Timer.delay(0.2);
         return s;
     }
-    public CANSparkMax applyMax(CANSparkMax s, boolean restoreFactoryDefaults) {
-        s = apply(s, restoreFactoryDefaults);
+    public CANSparkMax applyMax(CANSparkMax canSparkMax, boolean restoreFactoryDefaults) {
+        canSparkMax = apply(canSparkMax, restoreFactoryDefaults);
         if (alternateEncoderMode) {
             try {
-                var alternateEncoder = s.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, altEncoder.countsPerRev);
+                var alternateEncoder = canSparkMax.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, altEncoder.countsPerRev);
                 altEncoder.apply(alternateEncoder, RelativeEncoderConfig.calls, altEncDefaults, restoreFactoryDefaults);
                 
                 if (pid.feedbackSensor == FeedbackDevice.kAlternateEncoder) {
-                    var controller = s.getPIDController();
+                    var controller = canSparkMax.getPIDController();
                     SparkBaseConfig.config(()->controller.setFeedbackDevice(alternateEncoder));
                 }
             } catch (Exception e) {
@@ -215,10 +215,10 @@ public class SparkBaseConfig extends Config<CANSparkBase, SparkBaseConfig> {
             }
         } else {
             // limit switches + absolute encoder only available in normal mode
-            s = applyAbsEncAndSwitches(s, restoreFactoryDefaults);
+            canSparkMax = applyAbsEncAndSwitches(canSparkMax, restoreFactoryDefaults);
         }
         //Timer.delay(0.2);
-        return s;
+        return canSparkMax;
     }
 
     /**

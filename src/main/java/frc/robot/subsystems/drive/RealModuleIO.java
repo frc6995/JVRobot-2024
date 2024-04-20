@@ -6,7 +6,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
-import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder;
@@ -86,8 +86,8 @@ public class RealModuleIO extends ModuleIO {
     });
   }
 
-  protected final CANSparkFlex m_driveMotor;
-  protected final CANSparkFlex m_steerMotor;
+  protected final CANSparkMax m_driveMotor;
+  protected final CANSparkMax m_steerMotor;
   protected final SparkPIDController m_driveController;
   protected final SparkPIDController m_rotationController;
   protected final SparkMaxAbsoluteEncoderWrapper m_magEncoder;
@@ -100,21 +100,21 @@ public class RealModuleIO extends ModuleIO {
 
   public RealModuleIO(Consumer<Runnable> addPeriodic, ModuleConstants moduleConstants) {
     super(addPeriodic, moduleConstants);
-    m_driveMotor = Constants.DRIVE_CONFIG.applyFlex(
-      SparkDevice.getSparkFlex(moduleConstants.driveMotorID, MotorType.kBrushless),
+    m_driveMotor = Constants.DRIVE_CONFIG.applyMax(
+      SparkDevice.getSparkMax(moduleConstants.driveMotorID, MotorType.kBrushless),
       true
     );
     m_steerMotor = Constants.STEER_CONFIG
       .copy(c->c.absEncoder.zeroOffset(m_moduleConstants.magEncoderOffset))
-      .applyFlex(
-      SparkDevice.getSparkFlex(moduleConstants.rotationMotorID, MotorType.kBrushless),
+      .applyMax(
+      SparkDevice.getSparkMax(moduleConstants.rotationMotorID, MotorType.kBrushless),
       true
     );
     m_driveEncoder = m_driveMotor.getEncoder();
     m_magEncoder = new SparkMaxAbsoluteEncoderWrapper(m_steerMotor, 0);
     //Timer.delay(0.5);
-    // m_driveMotor = SparkDevice.getSparkFlex(moduleConstants.driveMotorID, MotorType.kBrushless);
-    // m_steerMotor = SparkDevice.getSparkFlex(moduleConstants.rotationMotorID, MotorType.kBrushless);
+    // m_driveMotor = SparkDevice.getSparkMax(moduleConstants.driveMotorID, MotorType.kBrushless);
+    // m_steerMotor = SparkDevice.getSparkMax(moduleConstants.rotationMotorID, MotorType.kBrushless);
     // m_driveMotor.restoreFactoryDefaults();
     // Timer.delay(0.5);
     // m_steerMotor.restoreFactoryDefaults();
