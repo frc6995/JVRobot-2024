@@ -30,6 +30,7 @@ import frc.robot.subsystems.LightStripS;
 import frc.robot.subsystems.LightStripS.States;
 import frc.robot.subsystems.drive.DrivebaseS;
 import frc.robot.subsystems.drive.Pathing;
+import frc.robot.subsystems.intake.IntakeRollerS;
 import frc.robot.subsystems.vision.BlobDetectionCamera;
 import frc.robot.util.AllianceWrapper;
 import frc.robot.util.InputAxis;
@@ -58,6 +59,7 @@ public class RobotContainer implements Logged {
   private final CommandXboxController m_keypad = new CommandXboxController(2);
   private final DriverDisplay m_driverDisplay = new DriverDisplay();
   private final DrivebaseS m_drivebaseS;
+  private final IntakeRollerS m_intakeRollerS;
 
   @Log.NT
   private final Mechanism2d MECH_VISUALIZER = RobotVisualizer.MECH_VISUALIZER;
@@ -112,19 +114,24 @@ public class RobotContainer implements Logged {
       PhotonCamera.setVersionCheckEnabled(false);
     }
     m_lightStripS = LightStripS.getInstance();
-    RobotVisualizer.setupVisualizer();
+    
     m_drivebaseS = new DrivebaseS(
         addPeriodic,
         (name, poses) -> m_field.getObject(name).setPoses(poses));
+    m_intakeRollerS = new IntakeRollerS();
     m_noteCamera = new BlobDetectionCamera(addPeriodic, m_field.getObject("note"));
 
     m_autos = new CommandGroups(
         m_drivebaseS,
+        m_intakeRollerS,
         m_noteCamera,
         m_lightStripS);
     configureDriverDisplay();
     configureButtonBindings();
     addAutoRoutines();
+
+    RobotVisualizer.setupVisualizer();
+    RobotVisualizer.addIntake(m_intakeRollerS.INTAKE_ROLLER);
 
     SmartDashboard.putData(m_autoSelector);
     Monologue.setupMonologue(this, "Robot", false, true);
@@ -183,6 +190,8 @@ public class RobotContainer implements Logged {
     m_drivebaseS.setDefaultCommand(m_drivebaseS.manualDriveC(m_fwdXAxis, m_fwdYAxis, m_rotAxis));
     m_driverController.a().whileTrue(faceSpeaker());
     m_driverController.b().whileTrue(faceNote());
+
+    m_driverController.rightBumper().whileTrue(m_intakeRollerS.intakeC());
     
     m_driverController.povCenter().negate().whileTrue(driveIntakeRelativePOV());
   }

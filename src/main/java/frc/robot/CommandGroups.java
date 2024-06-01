@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.LightStripS;
 import frc.robot.subsystems.drive.DrivebaseS;
 import frc.robot.subsystems.drive.Pathing;
+import frc.robot.subsystems.intake.IntakeRollerS;
 import frc.robot.subsystems.vision.BlobDetectionCamera;
 import frc.robot.util.AllianceWrapper;
 import frc.robot.util.InputAxis;
@@ -31,14 +32,17 @@ import java.util.function.DoubleConsumer;
 
 public class CommandGroups {
   private DrivebaseS m_drivebaseS;
+  private IntakeRollerS m_intakerollerS;
   private BlobDetectionCamera m_noteCamera;
   private LightStripS m_lightStripS;
 
   public CommandGroups(
       DrivebaseS drivebaseS,
+      IntakeRollerS intakeRollerS,
       BlobDetectionCamera noteCamera,
       LightStripS lightStripS) {
     m_drivebaseS = drivebaseS;
+    m_intakerollerS = intakeRollerS;
     m_lightStripS = lightStripS;
     m_noteCamera = noteCamera;
   }
