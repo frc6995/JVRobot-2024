@@ -27,10 +27,10 @@ public class Constants {
             * 2; // Model moment of intertia as a square slab slightly bigger than wheelbase with
     // axis through center
     // Drivetrain Performance Mechanical limits
-    public static final double MAX_MODULE_SPEED_MPS = 4.708;
-    public static final double MAX_FWD_REV_SPEED_MPS = 4.708;
-    public static final double MAX_STRAFE_SPEED_MPS = 4.708;
-    public static final double MAX_ROTATE_SPEED_RAD_PER_SEC = 11.5;
+    public static final double MAX_MODULE_SPEED_MPS = 7.0104;
+    public static final double MAX_FWD_REV_SPEED_MPS = 7.0104;
+    public static final double MAX_STRAFE_SPEED_MPS = 7.0104;
+    public static final double MAX_ROTATE_SPEED_RAD_PER_SEC = 12.6;
 
     // For manual driving
     public static final double MAX_LINEAR_SPEED = Units.feetToMeters(5);
@@ -82,9 +82,8 @@ public class Constants {
       }
     }
 
-    //TODO: ask CAD what the gearing is
-    public static final double WHEEL_REVS_PER_ENC_REV = 1.0 / 6.12;
-    public static final double AZMTH_REVS_PER_ENC_REV = 7.0 / 150.0;
+    public static final double WHEEL_REVS_PER_ENC_REV = 1.0 / 5.14;
+    public static final double AZMTH_REVS_PER_ENC_REV = 1.0 / 12.8;
 
     public static final double STEER_MAX_SPEED_RAD_PER_SEC = 7.8 * 2 * Math.PI;
     public static final double STEER_MAX_ACCEL_RAD_PER_SEC_SQ = 400 * 2 * Math.PI;
