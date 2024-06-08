@@ -15,9 +15,14 @@ public class RobotVisualizer {
         "drive-back", Units.inchesToMeters(12.5), 180, 4, ORANGE);
     private static final MechanismLigament2d FRONT_DRIVETRAIN_HALF = new MechanismLigament2d(
         "drive-front", Units.inchesToMeters(12.5), 0, 4, ORANGE);
+    private static final MechanismRoot2d INTAKE_VISUALIZER_ROOT = MECH_VISUALIZER.getRoot("intake", BASE_X- Units.inchesToMeters(15.0), Units.inchesToMeters(7.5));
     public static void setupVisualizer() {
         MECH_VISUALIZER_ROOT.append(BACK_DRIVETRAIN_HALF);
         MECH_VISUALIZER_ROOT.append(FRONT_DRIVETRAIN_HALF);
+    }
+
+    public static void addIntake(MechanismLigament2d intake) {
+        INTAKE_VISUALIZER_ROOT.append(intake);
     }
 
 }
