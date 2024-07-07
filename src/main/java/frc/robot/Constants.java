@@ -33,8 +33,8 @@ public class Constants {
     public static final double MAX_ROTATE_SPEED_RAD_PER_SEC = 12.6;
 
     // For manual driving
-    public static final double MAX_LINEAR_SPEED = Units.feetToMeters(5);
-    public static final double MAX_TURN_SPEED = Units.degreesToRadians(150);
+    public static final double MAX_LINEAR_SPEED = Units.feetToMeters(3);
+    public static final double MAX_TURN_SPEED = Units.degreesToRadians(100);
     // HELPER ORGANIZATION CONSTANTS
     public static final int FL = 0; // Front Left Module Index
     public static final int FR = 1; // Front Right Module Index
@@ -47,10 +47,10 @@ public class Constants {
     private static double HW = WHEEL_BASE_WIDTH_M / 2.0;
 
     public enum ModuleConstants {
-      FL("FL", 18, 17, 6, 0, HW, HW),
-      FR("FR", 12, 11, 7, 0, HW, -HW),
-      BL("BL", 16, 15, 8, 0, -HW, HW),
-      BR("BR", 14, 13, 9, 0, -HW, -HW);
+      FL("FL", 15, 16, 6, Math.PI, HW, HW),
+      FR("FR", 13, 14, 7, Math.PI, HW, -HW),
+      BL("BL", 17, 18, 8, Math.PI, -HW, HW),
+      BR("BR", 11, 12, 9, Math.PI, -HW, -HW);
 
       public final String name;
       public final int driveMotorID;

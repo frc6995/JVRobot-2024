@@ -59,7 +59,7 @@ public class RealModuleIO extends ModuleIO {
       c.
         freeLimit(20).
         stallLimit(40).
-        inverted(true).
+        inverted(false).
         idleMode(IdleMode.kBrake)
         .status6(40)
         .status5(20)
@@ -72,7 +72,7 @@ public class RealModuleIO extends ModuleIO {
         positionConversionFactor(Math.PI * 2).
         velocityConversionFactor(Math.PI * 2.0 / 60.0).
         zeroOffset(0).
-        inverted(false);
+        inverted(true);
       c.hallEncoder.
         positionConversionFactor(Math.PI * 2 * AZMTH_REVS_PER_ENC_REV)
         .velocityConversionFactor(Math.PI * 2.0  * AZMTH_REVS_PER_ENC_REV / 60.0);
