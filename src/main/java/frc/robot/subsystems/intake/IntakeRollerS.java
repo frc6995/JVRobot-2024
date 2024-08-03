@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.intake;
 
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 
 import java.util.function.Consumer;
@@ -25,15 +26,16 @@ import monologue.Annotations.Log;
 
 public class IntakeRollerS extends SubsystemBase implements Logged {
   public class Constants {
-    public static final int CAN_ID = 21;
+    public static final int LEADER_ID = 21;
+    public static final int FOLLOWER_ID = 22;
     public static final int CURRENT_LIMIT = 100;
-    public static final double OUT_VOLTAGE = 12;
-    public static final double IN_VOLTAGE = -12;
+    public static final double OUT_VOLTAGE = -5;
+    public static final double IN_VOLTAGE = 5;
         public static final Consumer<SparkBaseConfig> config = c->{
       c.
         freeLimit(100)
         .stallLimit(CURRENT_LIMIT)
-        .idleMode(IdleMode.kBrake)
+        .idleMode(IdleMode.kCoast)
         .inverted(false)
         .status6(32767)
         .status5(32767)
@@ -43,16 +45,22 @@ public class IntakeRollerS extends SubsystemBase implements Logged {
         .status0(15);
     };
   }
-  private CANSparkMax m_motor;
+  private CANSparkFlex m_leader;
+  private CANSparkFlex m_follower;
 
   public final MechanismLigament2d INTAKE_ROLLER = new MechanismLigament2d(
     "intake-roller", Units.inchesToMeters(1), 0, 4, new Color8Bit(255, 255, 255));
 
   /** Creates a new IntakeRollerS. */
   public IntakeRollerS() {
-    m_motor = new SparkBaseConfig(Constants.config)
-    .applyMax(
-      SparkDevice.getSparkMax(Constants.CAN_ID), true
+    m_leader = new SparkBaseConfig(Constants.config)
+    .applyFlex(
+      SparkDevice.getSparkFlex(Constants.LEADER_ID), true
+    );
+
+    m_follower = new SparkBaseConfig(Constants.config).follow(Constants.LEADER_ID, false)
+    .applyFlex(
+      SparkDevice.getSparkFlex(Constants.FOLLOWER_ID), true
     );
 
     setDefaultCommand(stopC());
@@ -60,20 +68,20 @@ public class IntakeRollerS extends SubsystemBase implements Logged {
 
   @Override
   public void periodic() {
-      INTAKE_ROLLER.setAngle(INTAKE_ROLLER.getAngle() + m_motor.getAppliedOutput());
+      INTAKE_ROLLER.setAngle(INTAKE_ROLLER.getAngle() + m_leader.getAppliedOutput());
   }
 
   /**sets motor to outtake */
   public void outtake () {
-    m_motor.setVoltage(Constants.OUT_VOLTAGE);
+    m_leader.setVoltage(Constants.OUT_VOLTAGE);
   }
   /**sets motor to intake */
   public void intake () {
-    m_motor.setVoltage(Constants.IN_VOLTAGE);
+    m_leader.setVoltage(Constants.IN_VOLTAGE);
   }
   /**stops the intake motor */
   public void stop() {
-    m_motor.setVoltage(0);
+    m_leader.setVoltage(0);
   }
   /**returns the command of the outtake */
   public Command outtakeC() {
@@ -89,10 +97,10 @@ public class IntakeRollerS extends SubsystemBase implements Logged {
   }
 
   public Command slowInC() {
-    return run(()->m_motor.setVoltage(-2));
+    return run(()->m_leader.setVoltage(-2));
   }
   @Log public double getCurrent() {
-    return m_motor.getOutputCurrent();
+    return m_leader.getOutputCurrent();
   }
   
 }
